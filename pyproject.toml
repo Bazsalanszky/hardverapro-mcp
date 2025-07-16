@@ -1,6 +1,6 @@
 [project]
 name = "hardverapro-mcp"
-version = "0.1.1"
+version = "0.2.2"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.13"
@@ -10,7 +10,8 @@ dependencies = [
     "requests>=2.32.4",
 ]
 [tool.setuptools.package-dir]
+"hardverapro_mcp" = "src/hardverapro_mcp"
 "scraper" = "src/scraper"
 
 [project.scripts]
-hardverapro-mcp = "run:main"
+hardverapro-mcp = "hardverapro_mcp.cli:main"
