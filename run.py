@@ -1,4 +1,10 @@
-import scraper
+import sys
+from pathlib import Path
+
+# Add the src directory to Python path
+sys.path.append(str(Path(__file__).parent / "src"))
+
+from scraper import categories, search, fetch
 import gradio as gr
 
 def hardverapro_search(query: str,offset: int = 0, category: str = "All")-> list:
@@ -16,7 +22,7 @@ def hardverapro_search(query: str,offset: int = 0, category: str = "All")-> list
             - 'price' (str): The price listed
             - 'link' (str): A full URL to the listing
     """
-    raw = scraper.search(query,offset=offset,category=category)
+    raw = search(query,offset=offset,category=category)
     return [[r["title"], r["price"], r["link"]] for r in raw]
 
 def hardverapro_fetch(url: str) -> dict:
@@ -32,7 +38,7 @@ def hardverapro_fetch(url: str) -> dict:
             - 'description' (str): The description of the listing
             - 'img' (str): A full URL to the image
     """
-    return scraper.fetch(url)
+    return fetch(url)
 
 
 
@@ -41,7 +47,7 @@ iface_search = gr.Interface(
     inputs=[
         gr.Textbox(label="Search query"),
         gr.Number(label="Offset (e.g. 100, 200)", value=0),
-        gr.Dropdown(choices=scraper.categories, value="All"),
+        gr.Dropdown(choices=categories, value="All"),
         ],
     outputs=gr.Dataframe(headers=["title", "price", "link"], type="array"),
     title="HardverApró Search"
@@ -61,8 +67,6 @@ tabbed_interface = gr.TabbedInterface(
 
 
 def main():
-    #scraper.fetch("https://hardverapro.hu/apro/sff_2_5_10k_15k_sas_hdd-k_1_2tb-ig/friss.html")
-    #iface.launch(mcp_server=True)
     tabbed_interface.launch(mcp_server=True)
 
 if __name__ == "__main__":

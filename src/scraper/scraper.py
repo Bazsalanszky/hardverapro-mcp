@@ -7,6 +7,7 @@ SEARCH_URL="keres.php?stext="
 
 categoriesMap = {
     "All": "",
+    "Hardver": "hardver",
     "Alaplap": "hardver/alaplap/",
     "Processzor": "hardver/processzor/",
     "Memória": "hardver/memoria/",
@@ -18,6 +19,7 @@ categoriesMap = {
     "Szerver SSD, HDD": "hardver/merevlemez_ssd/szerver_hdd_ssd/",
     "Adathordozó": "hardver/adathordozo/",
     "Hálózati termékek": "hardver/halozati_termekek/",
+    "Switch, HUB": "hardver/halozati_termekek/router_switch_repeater/switch_hub/",
     "3D nyomtatás": "hardver/3d_nyomtatas/",
     "Nyomtató, szkenner": "hardver/nyomtato_szkenner/",
     "Játékvezérlő, szimulátor": "hardver/jatekvezerlo/",
@@ -91,3 +93,7 @@ def findCategories(url= "https://hardverapro.hu/aprok/hardver/index.html"):
         href = a_tag['href'] if a_tag and a_tag.has_attr('href') else 'No link'
         href = href.rsplit('/',1)[0][6:] + '/'
         print(f"\"{name}\": \"{href}\",")
+
+
+# Export it explicitly
+__all__ = ['categories', 'search', 'fetch']  # optional, but good practice

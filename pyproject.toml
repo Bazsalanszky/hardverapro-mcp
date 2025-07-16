@@ -9,3 +9,8 @@ dependencies = [
     "gradio[mcp]>=5.34.2",
     "requests>=2.32.4",
 ]
+[tool.setuptools.package-dir]
+"scraper" = "src/scraper"
+
+[project.scripts]
+run-scraper = "run:main"
