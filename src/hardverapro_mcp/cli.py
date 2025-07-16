@@ -1,5 +1,5 @@
 from scraper import categories, search, fetch
-import gradio as gr
+from mcp import cli
 
 def hardverapro_search(query: str,offset: int = 0, category: str = "All")-> list:
     """
@@ -16,8 +16,7 @@ def hardverapro_search(query: str,offset: int = 0, category: str = "All")-> list
             - 'price' (str): The price listed
             - 'link' (str): A full URL to the listing
     """
-    raw = search(query,offset=offset,category=category)
-    return [[r["title"], r["price"], r["link"]] for r in raw]
+    return search(query,offset=offset,category=category)
 
 def hardverapro_fetch(url: str) -> dict:
     """
@@ -34,34 +33,11 @@ def hardverapro_fetch(url: str) -> dict:
     """
     return fetch(url)
 
-
-
-iface_search = gr.Interface(
-    fn=hardverapro_search,
-    inputs=[
-        gr.Textbox(label="Search query"),
-        gr.Number(label="Offset (e.g. 100, 200)", value=0),
-        gr.Dropdown(choices=categories, value="All"),
-        ],
-    outputs=gr.Dataframe(headers=["title", "price", "link"], type="array"),
-    title="HardverApró Search"
-)
-
-iface_fetch = gr.Interface(
-    fn=hardverapro_fetch,
-    inputs=gr.Textbox(label="URL"),
-    outputs=gr.JSON(),
-    title="HardverApró Fetch"
-)
-
-tabbed_interface = gr.TabbedInterface(
-    [iface_search, iface_fetch],
-)
-
-
-
 def main():
-    tabbed_interface.launch(mcp_server=True)
+    mcp_cli = cli.MCP()
+    mcp_cli.expose(hardverapro_search)
+    mcp_cli.expose(hardverapro_fetch)
+    mcp_cli.run()
 
 if __name__ == "__main__":
     main()
