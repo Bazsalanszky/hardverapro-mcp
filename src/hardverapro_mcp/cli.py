@@ -1,6 +1,12 @@
 from scraper import categories, search, fetch
-from mcp import cli
+from mcp.server.fastmcp import FastMCP
+import logging
 
+
+logging.basicConfig(level=logging.INFO)
+mcp = FastMCP("hardverapro")
+
+@mcp.tool()
 def hardverapro_search(query: str,offset: int = 0, category: str = "All")-> list:
     """
     Search HardverApró listings with the given query and extract relevant results.
@@ -18,6 +24,7 @@ def hardverapro_search(query: str,offset: int = 0, category: str = "All")-> list
     """
     return search(query,offset=offset,category=category)
 
+@mcp.tool()
 def hardverapro_fetch(url: str) -> dict:
     """
     Fetch a listing from HardverApró
@@ -34,10 +41,8 @@ def hardverapro_fetch(url: str) -> dict:
     return fetch(url)
 
 def main():
-    mcp_cli = cli.MCP()
-    mcp_cli.expose(hardverapro_search)
-    mcp_cli.expose(hardverapro_fetch)
-    mcp_cli.run()
+    logging.info("Starting HardverApró MCP")
+    mcp.run(transport="stdio")
 
 if __name__ == "__main__":
     main()
